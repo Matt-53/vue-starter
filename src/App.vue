@@ -1,51 +1,77 @@
 <template>
   <div class="my-app">
-    <h1>WItaj w sysytemie do zapisów na zajęcia!</h1>
+    <h1>Witaj w sysytemie do zapisów na zajęcia!</h1>
 
-    <div v-if="loggedIn">
-      Zalogowany!
+    <div v-if="authenticatedUsername.length > 0">
+      Zalogowany jako {{authenticatedUsername}}!
       <div>
-        <button @click="backToMainPage()">Wyloguj</button>
+        <button @click="logOut()">Wyloguj</button>
       </div>
     </div>
     <div v-else>
-      <input type="email" v-model="email" placeholder="Type your e-mail">
-      <button @click="checkIfProperAddress()">Zaloguj</button>
-    </div>
 
-    <div v-if="!email.includes('@')"> E-mail powinine zawierać "@"!</div>
+      //Dadać tutaj teg ochld component
+      <LoginForm @login="(username) => logMeIn(username)"></LoginForm>
+
+<!--      <input type="email" v-model="email" placeholder="Type your e-mail">-->
+<!--      <button @click="checkIfProperAddress()">Zaloguj</button>-->
+<!--    </div>-->
 
 <!--    <div v-else-if="email.length < 10">Ale masz krótki adres ({{email.length}})!</div>-->
 <!--    <div v-else-if="email.length < 15">Twój adres e-mail jest w sam raz.</div>-->
 <!--    <div v-else>Twój adres e-mail jest stanowczo za długi ({{email.length}})!</div>-->
+    </div>
   </div>
 </template>
 
 <script>
+import "milligram";
+import LoginForm from "./LoginForm";
+
 export default {
+  components: {LoginForm},
+
   data() {
     return {
-      email: '',
+      authenticatedUsername: '',
       password: '',
-      loggedIn: false
+      // loggedIn: false
     };
   },
 
   methods: {
-    alertMyEmail() {
-      alert(this.email);
+    logMeIn(username) {
+      this.authenticatedUsername = username;
     },
 
-    checkIfProperAddress() {
-      if (this.email.includes('@')) {
-        this.loggedIn = true;
-      }
-    },
-
-    backToMainPage() {
-      this.loggedIn = false;
-      this.email = '';
+    logOut() {
+      this.authenticatedUsername = '';
     }
+
+    // alertMyEmail() {
+    //   alert(this.email);
+    // },
+
+    // logMeIn(username) {
+    //   this.email = username;
+    //   this.loggedIn = true;
+    // },
+
+    // logMeOut() {
+    //   this.loggedIn = false;
+    //   this.email = '';
+    // }
+
+    // checkIfProperAddress() {
+    //   if (this.email.includes('@')) {
+    //     this.loggedIn = true;
+    //   }
+    // },
+
+    // backToMainPage() {
+    //   this.loggedIn = false;
+    //   this.email = '';
+    // }
   }
 }
 </script>
